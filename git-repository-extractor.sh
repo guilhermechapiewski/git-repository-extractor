@@ -2,26 +2,26 @@
 
 # Based on http://stackoverflow.com/questions/359424/detach-subdirectory-into-separate-git-repository
 
-MOBILIBS_REPO="git@github.com/guilhermechapiewski/mobi-libs.git"
-TEMP_DIR="./mobi-libs-temp"
-NEW_LIB_NAME=${1##*/}
+ORIGINAL_REPO=$1
+TEMP_DIR="./git-repo-extractor-temp"
+NEW_LIB_NAME=${2##*/}
 
-if [ "$1" == "" ]; then
+if [ "$1" == "" ] || [ "$2" == "" ]; then
 	echo "Usage: $0 [path_to_library_on_mobilibs]"
 	echo "Example: $0 android-lib/yahoosearchlibrary"
 	exit 1
 fi
 
 echo
-echo "Starting extraction of \"$NEW_LIB_NAME\" from mobi-libs (\"$1\" directory at \"$MOBILIBS_REPO\")..."
+echo "Starting extraction of \"$NEW_LIB_NAME\" (\"$1\" directory at \"$ORIGINAL_REPO\")..."
 echo
 
 # Clone your mobi-libs and go there.
-git clone $MOBILIBS_REPO $TEMP_DIR
+git clone $ORIGINAL_REPO $TEMP_DIR
 cd $TEMP_DIR
 
-if [ ! -d "$1" ]; then
-	echo "Error: Cannot find directory \"$1\" inside mobi-libs."
+if [ ! -d "$2" ]; then
+	echo "Error: Cannot find directory \"$2\" inside \"$ORIGINAL_REPO\"."
 	cd ..
 	rm -rf $TEMP_DIR
 	exit 1
@@ -48,4 +48,4 @@ cd ..
 mv $TEMP_DIR $NEW_LIB_NAME
 
 echo
-echo "Done: repository \"$1\" extracted to \"$NEW_LIB_NAME\"."
+echo "Done: Directory \"$2\" extracted to \"$NEW_LIB_NAME\"."
