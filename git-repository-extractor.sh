@@ -3,25 +3,26 @@
 # Based on http://stackoverflow.com/questions/359424/detach-subdirectory-into-separate-git-repository
 
 ORIGINAL_REPO=$1
+ORIGINAL_DIRECTORY=$2
 TEMP_DIR="./git-repo-extractor-temp"
 NEW_LIB_NAME=${2##*/}
 
-if [ "$1" == "" ] || [ "$2" == "" ]; then
+if [ "$ORIGINAL_REPO" == "" ] || [ "$ORIGINAL_DIRECTORY" == "" ]; then
 	echo "Usage: $0 [path_to_library_on_mobilibs]"
 	echo "Example: $0 android-lib/yahoosearchlibrary"
 	exit 1
 fi
 
 echo
-echo "Starting extraction of \"$NEW_LIB_NAME\" (\"$1\" directory at \"$ORIGINAL_REPO\")..."
+echo "Starting extraction of \"$NEW_LIB_NAME\" (\"$ORIGINAL_DIRECTORY\" directory at \"$ORIGINAL_REPO\")..."
 echo
 
 # Clone your mobi-libs and go there.
 git clone $ORIGINAL_REPO $TEMP_DIR
 cd $TEMP_DIR
 
-if [ ! -d "$2" ]; then
-	echo "Error: Cannot find directory \"$2\" inside \"$ORIGINAL_REPO\"."
+if [ ! -d "$ORIGINAL_DIRECTORY" ]; then
+	echo "Error: Cannot find directory \"$ORIGINAL_DIRECTORY\" inside \"$ORIGINAL_REPO\"."
 	cd ..
 	rm -rf $TEMP_DIR
 	exit 1
@@ -35,7 +36,7 @@ git remote rm origin
 git tag -l | xargs git tag -d
 
 # Extract the library.
-git filter-branch --prune-empty --subdirectory-filter $1 -- --all
+git filter-branch --prune-empty --subdirectory-filter $ORIGINAL_DIRECTORY -- --all
 
 # Garbage collect all commits that are not part of your library.
 git reset --hard
@@ -48,4 +49,4 @@ cd ..
 mv $TEMP_DIR $NEW_LIB_NAME
 
 echo
-echo "Done: Directory \"$2\" extracted to \"$NEW_LIB_NAME\"."
+echo "Done: Directory \"$ORIGINAL_DIRECTORY\" extracted to \"$NEW_LIB_NAME\"."
