@@ -8,8 +8,8 @@ TEMP_DIR="./git-repo-extractor-temp"
 NEW_LIB_NAME=${2##*/}
 
 if [ "$ORIGINAL_REPO" == "" ] || [ "$ORIGINAL_DIRECTORY" == "" ]; then
-	echo "Usage: $0 [path_to_library_on_mobilibs]"
-	echo "Example: $0 android-lib/yahoosearchlibrary"
+	echo "Usage: $0 [repo_url] [path_of_directory_to_extract]"
+	echo "Example: $0 \"git@github.com:guilhermechapiewski/simple-db-migrate.git\" \"example/mysql\""
 	exit 1
 fi
 
@@ -17,7 +17,7 @@ echo
 echo "Starting extraction of \"$NEW_LIB_NAME\" (\"$ORIGINAL_DIRECTORY\" directory at \"$ORIGINAL_REPO\")..."
 echo
 
-# Clone your mobi-libs and go there.
+# Clone the original repository and go there.
 git clone $ORIGINAL_REPO $TEMP_DIR
 cd $TEMP_DIR
 
