@@ -12,8 +12,8 @@ Usage
 
 Clone this repository and run *git-repository-extractor.sh*:
 
-	$ git clone git@github.com:guilhermechapiewski/git-repository-extractor.sh.git  
-	$ cd ./git-repository-extractor.sh  
+	$ git clone git@github.com:guilhermechapiewski/git-repository-extractor.git  
+	$ cd ./git-repository-extractor  
 	$ ./git-repository-extractor.sh [repo_url] [path_of_directory_to_extract]
 
 Example:
